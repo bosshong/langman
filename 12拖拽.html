@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #div1{
+            width: 200px;
+            height: 200px;
+            background: #f00;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+   <div id="div1"></div>
+     <script>
+         var oDiv=document.getElementById('div1');
+         oDiv.onmousedown=function(e){
+               e=e||event;
+             var iDisX= e.clientX-oDiv.offsetLeft;
+             var iDisY= e.clientY-oDiv.offsetTop;
+             document.onmousemove=function(e){
+                 e=e||event;
+                 oDiv.style.left= e.clientX-iDisX+'px';
+                 oDiv.style.top= e.clientY-iDisY+'px';
+                 if(oDiv.offsetLeft>=document.body.offsetWidth-oDiv.offsetWidth){
+            oDiv.style.left=document.body.offsetWidth-oDiv.offsetWidth+'px'
+                 }
+             };
+         };
+         oDiv.onmouseup=function(){
+              document.onmousemove=null;
+         };
+
+
+//         事件 事件源 事件处理方法
+
+     </script>
+</body>
+</html>

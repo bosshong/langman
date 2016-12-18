@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    ul{
+        list-style: none;
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+    }
+    #container{
+        width: 400px;
+        height: 400px;
+        margin: 200px auto;
+        position: relative;
+    }
+    #imgs{
+        width: 400px;
+        height: 400px;
+    }
+    #imgs img{
+        display: none;
+    }
+    #imgs .select{
+        display: block;
+    }
+    #tab li{
+        float: left;
+        width: 20px;
+        height: 20px;
+        background: #000;
+        color: #fff;
+        text-align: center;
+        line-height: 20px;
+        margin-right: 2px;
+        cursor: pointer;
+    }
+    #tab .select{
+        background: orange;
+    }
+    #arrows{
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+    }
+    #prev,#next{
+        width: 20px;
+        left: 20px;
+        display: inline-block;
+        background: #000;
+        color: #fff;
+        text-align: center;
+        line-height: 20px;
+        margin-right: 2px;
+        cursor: pointer;
+    }
+    #mask{
+        width: 400px ;
+        height: 400px;
+        background: #ccc;
+        text-align: center;
+        line-height: 400px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        opacity: 0.8;
+        filter: alpha(opacity=80);//兼容性问题
+
+    }
+    /*行级元素，不能设置宽高，转换成块级元素，能设置宽高*/
+    /*display:inline; 内联元素，简单来说就是在同一行显示。*/
+    /*display:block; 块级元素，简单来说就是就是有换行，会换到第二行。*/
+    /*display:inline-block; 就是在同一行内的块级元素。*/
+
+    /*绝对定位是想对于已经定位的父级元素，如果没有已经定位的父级元素，则相对于浏览器定位*/
+
+
+
+</style>
+<body>
+<div id="container">
+    <div id="mask">加载中...</div>
+    <div id="imgs"></div>
+    <ul id="tab"></ul>
+    <div id="arrows">
+        <span id="prev">&lt;</span>
+        <span id="next">&gt;</span>
+    </div>
+</div>
+
+
+<script>
+    var oContainer=getElemById('container');
+    var oTab=getElemById('tab');
+    var aLi=getElemsByTagName(oTab,'li');
+    var oImgs=getElemById('imgs');
+    var aImg=getElemsByTagName(oImgs,'img');
+    var oPrev=getElemById('prev');
+    var oNext=getElemById('next');
+    var oMask=getElemById('mask');
+    var nowIdx=0;//全局变量,存储当前选中的下标
+    var imgNum=4;//记录图片的数量
+    var count=0;//记录已经加载的图片的个数
+
+    //1.生成img标签,以及li标签
+    for(var i=0;i<imgNum;i++){
+        var oImg=new Image();
+        oImg.onload=function(){
+            count++;
+            if(count==imgNum){
+                loadSuccess();
+            }
+        };
+        oImg.src='../images/'+(i+1)+'.jpg';
+        oImgs.appendChild(oImg);
+
+        var oLi=document.createElement('li');
+        oLi.innerHTML=i+1;
+        oTab.appendChild(oLi);
+    }
+
+    function loadSuccess(){
+         oContainer.removeChild(oMask);
+          changeImg(nowIdx);
+        for(var i=0;i<imgNum;i++){
+            aLi[i].index=i;
+            aLi[i].onmouseover=function(){
+                nowIdx=this.index;
+                changeImg(this.index);
+            }
+        }
+
+        oPrev.onclick=oNext.onclick=function(){
+            if(this==oPrev){
+                nowIdx--;
+                if(nowIdx==-1){
+                    nowIdx=aLi.length-1;
+                }
+                changeImg(nowIdx);
+
+            }else{//点击next
+                nowIdx++;
+                if(nowIdx == aLi.length){
+                    nowIdx=0;
+                }
+                changeImg(nowIdx);
+            }
+        };
+
+        var timer=setInterval(function(){
+            oNext.onclick();
+        },1000);
+
+        oContainer.onmouseover=function(){
+            clearInterval(timer);
+        };
+        oContainer.onmouseout=function(){
+            clearInterval(timer);
+            timer=setInterval(function(){
+                oNext.onclick();
+            },1000);
+        };
+    }
+
+    function changeImg(idx){
+        nowIdx=idx;
+        for(var j=0;j<aLi.length;j++){
+            aLi[j].style.background='#000';
+            aImg[j].style.display='none';
+        }
+        aLi[nowIdx].style.background='orange';
+        aImg[nowIdx].style.display='block';
+    }
+
+    function getElemById(id){
+        return document.getElementById(id);
+    }
+    function getElemsByTagName(obj,tag){
+        return obj.getElementsByTagName(tag);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    ul{
+        list-style: none;
+    }
+    body{
+        height: 2000px;
+    }
+    #menu{
+        width: 80px;
+        height: 100px;
+        border: 1px solid #000;
+        display: none;
+    }
+    #menu li{
+        width: 80px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        border: 1px dashed #ccc;
+    }
+
+</style>
+<body>
+<ul id="menu">
+    <li>菜单1</li>
+    <li>菜单2</li>
+    <li>菜单3</li>
+</ul>
+
+      <script>
+           document.body.oncontextmenu=function(e){
+               e=e||event;
+               var oMenu=document.getElementById('menu');
+               oMenu.style.display='block';
+               oMenu.style.position='absolute';
+               oMenu.style.left= e.clientX+'px';
+               oMenu.style.top= e.clientY+'px';
+               return false;
+           };
+
+//           参数e是为了获得event事件而写入的，
+//           函数中的target和srcElemen是event下面的事件，
+//           这样写就可以直接调用，不需要在声明
+      </script>
+
+
+</body>
+</html>

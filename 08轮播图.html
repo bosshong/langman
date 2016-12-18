@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    ul{
+        list-style: none;
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+    }
+    #container{
+        width: 400px;
+        height: 400px;
+        margin: 200px auto;
+        position: relative;
+    }
+    #imgs{
+        width: 400px;
+        height: 400px;
+    }
+    #imgs img{
+        display: none;
+    }
+    #imgs .select{
+        display: block;
+    }
+    #tab li{
+        float: left;
+        width: 20px;
+        height: 20px;
+        background: #000;
+        color: #fff;
+        text-align: center;
+        line-height: 20px;
+        margin-right: 2px;
+        cursor: pointer;
+    }
+    #tab .select{
+        background: orange;
+    }
+    #arrows{
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+    }
+    #prev,#next{
+        width: 20px;
+        left: 20px;
+        display: inline-block;
+        background: #000;
+        color: #fff;
+        text-align: center;
+        line-height: 20px;
+        margin-right: 2px;
+        cursor: pointer;
+    }
+          /*行级元素，不能设置宽高，转换成块级元素，能设置宽高*/
+          /*display:inline; 内联元素，简单来说就是在同一行显示。*/
+          /*display:block; 块级元素，简单来说就是就是有换行，会换到第二行。*/
+          /*display:inline-block; 就是在同一行内的块级元素。*/
+
+         /*绝对定位是想对于已经定位的父级元素，如果没有已经定位的父级元素，则相对于浏览器定位*/
+
+
+
+</style>
+<body>
+ <div id="container">
+     <div id="imgs">
+         <img src="../images/1.jpg" alt="" class="select">
+         <img src="../images/2.jpg" alt="">
+         <img src="../images/3.jpg" alt="">
+         <img src="../images/4.jpg" alt="">
+     </div>
+     <ul id="tab">
+             <li class="select">1</li>
+             <li>2</li>
+             <li>3</li>
+             <li>4</li>
+     </ul>
+     <div id="arrows">
+         <span id="prev">&lt;</span>
+         <span id="next">&gt;</span>
+     </div>
+ </div>
+
+
+      <script>
+          var oContainer=document.getElementById('container');
+          var oTab=document.getElementById('tab');
+          var aLi=oTab.getElementsByTagName('li');
+          var oImgs=document.getElementById('imgs');
+          var aImg=oImgs.getElementsByTagName('img');
+          var oPrev=document.getElementById('prev');
+          var oNext=document.getElementById('next');
+          var nowIdx=0;//全局变量,存储当前选中的下标
+
+          function changeImg(idx){
+              nowIdx=idx;
+              for(var j=0;j<aLi.length;j++){
+                  aLi[j].style.background='#000';
+                  aImg[j].style.display='none';
+              }
+              aLi[nowIdx].style.background='orange';
+              aImg[nowIdx].style.display='block';
+          }
+
+
+          for(var i=0;i<aLi.length;i++){
+              aLi[i].index=i;
+              aLi[i].onmouseover=function(){
+                  nowIdx=this.index;
+                  changeImg(nowIdx);
+              }
+          }
+
+          oPrev.onclick=oNext.onclick=function(){
+               if(this==oPrev){
+                   nowIdx--;
+                   if(nowIdx==-1){
+                       nowIdx=aLi.length-1;
+                   }
+                   changeImg(nowIdx);
+
+               }else{//点击next
+                   nowIdx++;
+                   if(nowIdx == aLi.length){
+                       nowIdx=0;
+                   }
+                   changeImg(nowIdx);
+               }
+          };
+
+          var timer=setInterval(function(){
+              oNext.onclick();
+          },1000);
+
+          oContainer.onmouseover=function(){
+              clearInterval(timer);
+          };
+          oContainer.onmouseout=function(){
+              clearInterval(timer);
+              timer=setInterval(function(){
+                  oNext.onclick();
+              },1000);
+          };
+
+      </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        ul{
+            list-style: none;
+        }
+        #container{
+            width: 400px;
+            height: 300px;
+            background: #ccc;
+            margin: 200px auto;
+        }
+        #tab{
+            border-bottom:1px solid #000 ;
+            height: 30px;
+        }
+        #tab li{
+            width: 100px;
+            height: 30px;
+            background: gray;
+            float: left;
+            margin-right: 2px;
+            text-align: center;
+            line-height: 30px;
+            cursor: pointer;//鼠标变成小手
+        }
+        #content{
+            clear: both;
+        }
+        #tab .first{
+            background: #000;
+            color: white;
+        }
+        #content div{
+            width: 400px;
+            height: 270px;
+        }
+        #content .hide-div{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+   <div id="container">
+       <ul id="tab">
+           <li class="first">html</li>
+           <li>css</li>
+           <li>javascript</li>
+       </ul>
+       <div id="content">
+           <div>111</div>
+           <div class="hide-div">222</div>
+           <div class="hide-div">333</div>
+       </div>
+   </div>
+
+   <script>
+        var oTab=document.getElementById('tab');
+        var aLi=oTab.getElementsByTagName('li');
+        var oContent=document.getElementById('content');
+        var aDiv=oContent.getElementsByTagName('div');
+//        var index=0;//表示当前的div的下标
+        for(var i=0;i<aLi.length;i++){
+            a[i].index=i;//i保存不住，所以用一个变量保存i
+            aLi[i].onclick=function(){
+               //操作li
+               for(var j=0;j<aLi.length;j++){
+                    aLi[j].style.background='gray';
+                    aLi[j].style.color='#000';
+                    aDiv[j].style.display='none';
+                }
+               this.style.background='#000';
+               this.style.color='#fff';
+               //操作div
+               aDiv[this.index].style.display='block';
+
+           }
+       }
+   </script>
+</body>
+</html>
